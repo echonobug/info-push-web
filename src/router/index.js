@@ -5,7 +5,7 @@ const routes = [
   {
     path: '/',
     name: 'Layout',
-    component: () => import('@/layout/index'),
+    component: () => import('@/layout'),
     children: [
       {
         path: '/home',
