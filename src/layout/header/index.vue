@@ -32,12 +32,14 @@ export default {
 <style lang="scss" scoped>
 .header {
   background: #fff;
-  padding: 0
+  padding: 0;
+  height: 50px;
+  line-height: 50px;
 }
 
 .trigger {
   font-size: 18px;
-  line-height: 64px;
+  line-height: 50px;
   padding: 0 24px;
   cursor: pointer;
   transition: color 0.3s;

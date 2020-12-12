@@ -12,10 +12,14 @@ export default {
 
 <style scoped>
 .content {
-  margin: 24px 16px;
+  margin: 5px;
   padding: 24px;
   background: #fff;
-  minHeight: 280px
+  height: 100%;
+  overflow: auto;
 }
 
+::-webkit-scrollbar {
+  display: none;
+}
 </style>
