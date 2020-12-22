@@ -1,30 +1,75 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../views/Home.vue'
+import Home from '@/views/Home.vue'
+import Layout from '@/layout'
 
-const routes = [
+export const routes = [
   {
     path: '/',
-    name: 'Layout',
-    component: () => import('@/layout'),
+    component: Layout,
+    redirect: '/index',
     children: [
       {
-        path: '/home',
+        path: '/index',
         name: 'Home',
-        component: Home
+        component: Home,
+        meta: {
+          title: '首页',
+          icon: 'fa fa-home'
+        }
+      }
+    ]
+  },
+  {
+    path: '/about',
+    component: Layout,
+    children: [
+      {
+        path: '/about/about',
+        name: 'About',
+        component: () => import('@/views/About.vue'),
+        meta: {
+          title: '关于',
+          icon: 'fa fa-info'
+        }
+      }
+    ]
+  },
+  {
+    path: '/user',
+    component: () => import('@/views/user/layout'),
+    hidden: true,
+    redirect: '/user/login',
+    children: [
+      {
+        path: '/user/login',
+        name: 'Login',
+        component: () => import('@/views/user/Login')
       },
       {
-        path: '/about',
-        name: 'About',
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
-        component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-      }]
+        path: '/user/register',
+        name: 'Register',
+        component: () => import('@/views/user/Register')
+      }
+    ]
+  },
+  {
+    path: '/500',
+    component: () => import('@/views/exception/500'),
+    hidden: true
+  },
+  {
+    path: '/403',
+    component: () => import('@/views/exception/403'),
+    hidden: true
+  },
+  {
+    path: '/:pathMatch(.*)',
+    component: () => import('@/views/exception/404'),
+    hidden: true
   }
-
 ]
 
-const router = createRouter({
+export const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
 })

@@ -1,8 +1,13 @@
 <template>
   <a-layout-header class="header">
-    <menu-unfold-outlined v-if="store.state.siderCollapsed" class="trigger"
-                          @click="() => store.dispatch('EXPANDED_SIDER')"/>
-    <menu-fold-outlined v-else class="trigger" @click="() => store.dispatch('COLLAPSED_SIDER')"/>
+    <div class="left-content">
+      <menu-unfold-outlined v-if="store.state.siderCollapsed" class="trigger"
+                            @click="() => store.dispatch('EXPANDED_SIDER')"/>
+      <menu-fold-outlined v-else class="trigger" @click="() => store.dispatch('COLLAPSED_SIDER')"/>
+    </div>
+    <div class="right-content">
+      <avatar-dropdown/>
+    </div>
   </a-layout-header>
 </template>
 
@@ -13,10 +18,12 @@ import {
   MenuFoldOutlined
 } from '@ant-design/icons-vue'
 import { useStore } from 'vuex'
+import AvatarDropdown from '@/layout/header/components/AvatarDropdown'
 
 export default {
   name: 'Header',
   components: {
+    AvatarDropdown,
     MenuUnfoldOutlined,
     MenuFoldOutlined
   },
@@ -35,6 +42,16 @@ export default {
   padding: 0;
   height: 50px;
   line-height: 50px;
+  .left-content{
+    display: inline-block;
+  }
+  .right-content{
+    float: right;
+    display: inline-block;
+    :hover{
+      background-color: #fafafa;
+    }
+  }
 }
 
 .trigger {

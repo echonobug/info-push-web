@@ -16,7 +16,7 @@ export default {
   setup (props, context) {
     const store = useStore()
     const state = reactive({
-      title: '信息推送平台'
+      title: '信息聚合与推送平台'
     })
     return {
       ...toRefs(state),
@@ -49,7 +49,7 @@ export default {
 
     .sidebar-title {
       display: inline-block;
-      margin:  0 26px 0 14px;
+      margin:  0 5px 0 5px;
       color: #fff;
       font-weight: 600;
       line-height: 40px;
