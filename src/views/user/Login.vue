@@ -29,7 +29,7 @@
         <div class="input-item">
           <a-row type="flex" justify="space-between">
             <a-col :span="6">
-              <a-checkbox v-model:checked="loginForm.remember">
+              <a-checkbox v-model:checked="loginForm.rememberMe">
                 记住我
               </a-checkbox>
             </a-col>
@@ -68,7 +68,7 @@ export default {
       loginForm: {
         name: '',
         password: '',
-        remember: false
+        rememberMe: false
       },
       rules: {
         name: [

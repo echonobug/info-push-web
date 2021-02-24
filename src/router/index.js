@@ -13,23 +13,85 @@ export const routes = [
         name: 'Home',
         component: Home,
         meta: {
-          title: '首页',
-          icon: 'fa fa-home'
+          title: '仪表盘',
+          icon: 'fa fa-tachometer'
         }
       }
     ]
   },
   {
-    path: '/about',
+    path: '/users',
     component: Layout,
+    redirect: '/index',
+    meta: {
+      title: '用户角色管理',
+      icon: 'fa fa-user-circle-o'
+    },
     children: [
       {
-        path: '/about/about',
-        name: 'About',
+        path: '/users/user',
+        name: 'About1',
         component: () => import('@/views/About.vue'),
         meta: {
-          title: '关于',
-          icon: 'fa fa-info'
+          title: '用户管理',
+          icon: 'fa fa-user-o'
+        }
+      },
+      {
+        path: '/users/role',
+        name: 'About2',
+        component: () => import('@/views/About.vue'),
+        meta: {
+          title: '角色管理',
+          icon: 'fa fa-user-circle'
+        }
+      }
+    ]
+  },
+  {
+    path: '/info',
+    component: Layout,
+    redirect: '/index',
+    children: [
+      {
+        path: '/info/index',
+        name: 'Home3',
+        component: Home,
+        meta: {
+          title: '信息中心',
+          icon: 'fa fa-globe'
+        }
+      }
+    ]
+  },
+  {
+    path: '/subscription',
+    component: Layout,
+    redirect: '/subscription/index',
+    children: [
+      {
+        path: '/subscription/index',
+        name: 'Home2',
+        component: Home,
+        meta: {
+          title: '订阅管理',
+          icon: 'fa fa-heart-o'
+        }
+      }
+    ]
+  },
+  {
+    path: '/task',
+    component: Layout,
+    redirect: '/task/index',
+    children: [
+      {
+        path: '/task/index',
+        name: 'Home1',
+        component: Home,
+        meta: {
+          title: '系统任务管理',
+          icon: 'fa fa-tasks'
         }
       }
     ]

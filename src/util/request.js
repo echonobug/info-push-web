@@ -26,6 +26,8 @@ const errorHandler = (error) => {
       })
     } else if (status === 500) {
       show500()
+    } else if (status === 400) {
+      message.error('请求参数有误！')
     }
   }
   return Promise.reject(error)

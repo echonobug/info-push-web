@@ -17,6 +17,10 @@ export function toLogin () {
   go('/user/login')
 }
 
+export function toUserCenter () {
+  go('/user/center')
+}
+
 export function show500 () {
   go('/500')
 }

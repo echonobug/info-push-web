@@ -14,7 +14,7 @@
     </div>
     <a-form
       ref="ruleFormRef"
-      :model="loginForm"
+      :model="registerForm"
       :rules="rules"
     >
       <a-form-item name="email">
@@ -22,9 +22,20 @@
           class="input-item"
           size="large"
           type="text"
-          v-model:value="loginForm.email"
+          v-model:value="registerForm.email"
           placeholder="请输入邮箱">
           <template v-slot:prefix><i class="fa fa-envelope-o" aria-hidden="true"></i></template>
+        </a-input>
+      </a-form-item>
+
+      <a-form-item name="username">
+        <a-input
+          class="input-item"
+          size="large"
+          type="text"
+          v-model:value="registerForm.username"
+          placeholder="请输入用户名">
+          <template v-slot:prefix><i class="fa fa-user-circle-o" aria-hidden="true"></i></template>
         </a-input>
       </a-form-item>
 
@@ -43,7 +54,7 @@
           <a-input-password
             class="input-item"
             size="large"
-            v-model:value="loginForm.password"
+            v-model:value="registerForm.password"
             @click="handlePasswordInputClick"
             placeholder="请输入密码">
             <template v-slot:prefix><i class="fa fa-lock" aria-hidden="true"></i></template>
@@ -54,7 +65,7 @@
         <a-input-password
           class="input-item"
           size="large"
-          v-model:value="loginForm.repeatPassword"
+          v-model:value="registerForm.repeatPassword"
           placeholder="请再次输入密码">
           <template v-slot:prefix><i class="fa fa-lock" aria-hidden="true"></i></template>
         </a-input-password>
@@ -64,8 +75,8 @@
           size="large"
           type="primary"
           @click="handleSubmit"
-          :loading="loginBtn"
-          :disabled="loginBtn"
+          :loading="registerBtn"
+          :disabled="registerBtn"
           class="input-item"
         >注册
         </a-button>
@@ -76,8 +87,9 @@
 
 <script>
 import { reactive, ref, toRefs, computed } from 'vue'
-import { useStore } from 'vuex'
-import { toHome, toLogin } from '@/util/router'
+import { toLogin } from '@/util/router'
+import { register, validateUsername } from '@/api/user'
+import { message } from 'ant-design-vue'
 
 const levelNames = {
   0: '低',
@@ -130,7 +142,7 @@ export default {
       }
     }
     const handlePasswordCheck = (rule, value) => {
-      const password = state.loginForm.password
+      const password = state.registerForm.password
       return new Promise((resolve, reject) => {
         if (value === undefined || value.length === 0) {
           return reject(new Error('请再次输入密码'))
@@ -148,9 +160,30 @@ export default {
     const passwordLevelName = computed(() => levelNames[state.passwordLevel])
     const passwordLevelColor = computed(() => levelColor[state.passwordLevel])
 
+    const validateUserName = async function (rule, value) {
+      if (value.length < 4) {
+        return new Promise(function (resolve, reject) {
+          return reject(new Error('用户名不能少于4个字符！'))
+        })
+      }
+      let isOk = false
+      await validateUsername({ username: value }).then(() => {
+        isOk = true
+      }).catch(() => {
+        isOk = false
+      })
+      return new Promise(function (resolve, reject) {
+        if (isOk) {
+          return resolve()
+        } else {
+          return reject(new Error('用户名已存在！请更换。'))
+        }
+      })
+    }
     const state = reactive({
-      loginForm: {
+      registerForm: {
         email: '',
+        username: '',
         password: '',
         repeatPassword: ''
       },
@@ -163,6 +196,12 @@ export default {
           }, {
             pattern: /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/,
             message: '邮箱格式不正确！',
+            trigger: 'blur'
+          }
+        ],
+        username: [
+          {
+            validator: validateUserName,
             trigger: 'blur'
           }
         ],
@@ -179,28 +218,27 @@ export default {
           }
         ]
       },
-      loginBtn: false,
+      registerBtn: false,
       passwordLevelChecked: false,
       passwordLevel: 0,
       percent: 10,
       progressColor: '#FF0000'
     })
-    const store = useStore()
     const ruleFormRef = ref(null)
     const handleSubmit = () => {
       ruleFormRef.value
         .validate()
         .then(() => {
-          state.loginBtn = true
-          store.dispatch('LOGIN', state.loginForm)
+          state.registerBtn = true
+          register(state.registerForm)
             .then(() => {
-              toHome()
+              message.success('注册成功！')
             })
             .catch(e => {
               console.log(e)
             })
             .finally(() => {
-              state.loginBtn = false
+              state.registerBtn = false
             })
         })
     }

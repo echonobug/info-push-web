@@ -40,6 +40,8 @@ export default {
       }).finally(() => {
         state.loading = false
       })
+    } else {
+      state.loading = false
     }
     return {
       ...toRefs(state),

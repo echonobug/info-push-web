@@ -3,8 +3,9 @@ import request from '@/util/request'
 const userApi = {
   Login: '/user/login',
   Logout: '/user/logout',
+  ValidateUsername: '/user/validateUsername',
   ForgePassword: '/auth/forge-password',
-  Register: '/auth/register',
+  Register: '/user/register',
   twoStepCode: '/auth/2step-code',
   SendSms: '/account/sms',
   SendSmsErr: '/account/sms_err',
@@ -13,22 +14,27 @@ const userApi = {
   UserMenu: '/user/nav'
 }
 
-/**
- * user func
- * parameter: {
- *     username: '',
- *     password: '',
- *     remember_me: true,
- *     captcha: '12345'
- * }
- * @param parameter
- * @returns {*}
- */
 export function login (parameter) {
   return request({
     url: userApi.Login,
     method: 'post',
     data: parameter
+  })
+}
+
+export function register (parameter) {
+  return request({
+    url: userApi.Register,
+    method: 'post',
+    data: parameter
+  })
+}
+
+export async function validateUsername (parameter) {
+  return await request({
+    url: userApi.ValidateUsername,
+    method: 'get',
+    params: parameter
   })
 }
 
@@ -40,11 +46,10 @@ export function getSmsCaptcha (parameter) {
   })
 }
 
-export function getInfo (parameter) {
+export function getInfo () {
   return request({
     url: userApi.UserInfo,
-    method: 'get',
-    params: parameter
+    method: 'get'
   })
 }
 

@@ -1,6 +1,7 @@
 import { createStore } from 'vuex'
 import { login, getInfo } from '@/api/user'
 import { ACCESS_TOKEN } from '@/util/constant'
+import { toLogin } from '@/util/router'
 
 export default createStore({
   state: {
@@ -20,16 +21,16 @@ export default createStore({
       state.siderCollapsed = false
     },
     SET_NAME: (state, name) => {
-      state.name = name
+      state.user.name = name
     },
     SET_AVATAR: (state, avatar) => {
-      state.avatar = avatar
+      state.user.avatar = avatar
     },
     SET_ROLES: (state, roles) => {
-      state.roles = roles
+      state.user.roles = roles
     },
     SET_INFO: (state, info) => {
-      state.info = info
+      state.user.info = info
     }
   },
   actions: {
@@ -51,8 +52,7 @@ export default createStore({
     },
     GET_USER_INFO ({ commit }) {
       return new Promise((resolve, reject) => {
-        const token = localStorage.getItem(ACCESS_TOKEN)
-        getInfo({ token: token }).then(data => {
+        getInfo().then(data => {
           commit('SET_NAME', data.name)
           commit('SET_AVATAR', data.avatar)
           resolve(data)
@@ -65,6 +65,7 @@ export default createStore({
       commit('SET_NAME', '')
       commit('SET_ROLES', [])
       localStorage.removeItem(ACCESS_TOKEN)
+      toLogin()
     }
   },
   modules: {}

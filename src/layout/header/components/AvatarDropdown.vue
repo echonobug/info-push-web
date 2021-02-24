@@ -1,11 +1,13 @@
 <template>
   <a-dropdown placement="bottomRight" overlayClassName="content">
     <div class="content">
-      <a-avatar class="avatar">U</a-avatar>
-      <span class="uname">User Name</span>
+      <a-avatar v-if="isBlank(store.state.user.avatar)" class="avatar">
+        {{ store.state.user.name.charAt(0) }}
+      </a-avatar>
+      <span class="uname">{{ store.state.user.name }}</span>
     </div>
     <template v-slot:overlay>
-      <a-menu class="ant-pro-drop-down menu" :selected-keys="[]">
+      <a-menu class="ant-pro-drop-down menu" @click="onClick">
         <a-menu-item key="center">
           <span class="icon"><i class="fa fa-user-o" aria-hidden="true"></i></span>
           个人中心
@@ -24,6 +26,13 @@
   </a-dropdown>
 </template>
 <script>
+import { useStore } from 'vuex'
+import { isBlank } from '@/util/validate'
+import { toUserCenter } from '@/util/router'
+import { Modal } from 'ant-design-vue'
+import { createVNode } from 'vue'
+import { ExclamationCircleOutlined } from '@ant-design/icons-vue'
+
 export default {
   name: 'AvatarDropdown',
   props: {
@@ -37,6 +46,30 @@ export default {
     }
   },
   setup () {
+    const store = useStore()
+    const onClick = ({ key }) => {
+      if (key === 'center') {
+        toUserCenter()
+      } else if (key === 'logout') {
+        Modal.confirm({
+          title: '信息',
+          content: '确认登出吗？',
+          okText: '是的',
+          cancelText: '取消',
+          icon: createVNode(ExclamationCircleOutlined),
+          onOk: () => {
+            store.dispatch('LOGOUT')
+          },
+          onCancel () {
+          }
+        })
+      }
+    }
+    return {
+      store,
+      isBlank,
+      onClick
+    }
   }
 }
 </script>
@@ -46,6 +79,7 @@ export default {
   display: flex;
   align-items: center;
   padding: 0 15px;
+  min-width: 120px;
 
   .avatar {
     color: #f56a00;
@@ -56,7 +90,7 @@ export default {
     margin-left: 10px;
   }
 
-  .icon{
+  .icon {
     margin-right: 5px;
   }
 }
