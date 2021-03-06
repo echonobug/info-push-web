@@ -20,6 +20,7 @@
         <a-input-password
           class="input-item"
           size="large"
+          @pressEnter="handleSubmit"
           v-model:value="loginForm.password"
           placeholder="请输入密码">
           <template v-slot:prefix><i class="fa fa-lock" aria-hidden="true"></i></template>

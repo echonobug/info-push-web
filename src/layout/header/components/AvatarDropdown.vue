@@ -2,7 +2,7 @@
   <a-dropdown placement="bottomRight" overlayClassName="content">
     <div class="content">
       <a-avatar v-if="isBlank(store.state.user.avatar)" class="avatar">
-        {{ store.state.user.name.charAt(0) }}
+        {{ getFirst(store.state.user.name) }}
       </a-avatar>
       <span class="uname">{{ store.state.user.name }}</span>
     </div>
@@ -47,6 +47,10 @@ export default {
   },
   setup () {
     const store = useStore()
+    const getFirst = (name) => {
+      const begin = name.trim().split(' ')[0]
+      return /^\w*$/.test(begin) ? begin : begin.charAt(0)
+    }
     const onClick = ({ key }) => {
       if (key === 'center') {
         toUserCenter()
@@ -68,7 +72,8 @@ export default {
     return {
       store,
       isBlank,
-      onClick
+      onClick,
+      getFirst
     }
   }
 }

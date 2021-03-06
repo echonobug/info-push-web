@@ -55,8 +55,8 @@ export const routes = [
     children: [
       {
         path: '/info/index',
-        name: 'Home3',
-        component: Home,
+        name: 'InfoCenter',
+        component: () => import('@/views/info/InfoCenter.vue'),
         meta: {
           title: '信息中心',
           icon: 'fa fa-globe'
@@ -71,8 +71,8 @@ export const routes = [
     children: [
       {
         path: '/subscription/index',
-        name: 'Home2',
-        component: Home,
+        name: 'Subscription',
+        component: () => import('@/views/subscription/Subscription'),
         meta: {
           title: '订阅管理',
           icon: 'fa fa-heart-o'

@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@ant-design/icons-vue": "^5.1.6",
-    "ant-design-vue": "^2.0.0-rc.5",
+    "ant-design-vue": "^2.0.1",
     "axios": "^0.21.0",
     "font-awesome": "^4.7.0",
     "qs": "^6.9.4",
