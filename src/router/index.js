@@ -87,8 +87,8 @@ export const routes = [
     children: [
       {
         path: '/task/index',
-        name: 'Home1',
-        component: Home,
+        name: 'TaskManage',
+        component: () => import('@/views/task/TaskManage'),
         meta: {
           title: '系统任务管理',
           icon: 'fa fa-tasks'
