@@ -23,10 +23,23 @@
               <div class="description">{{ item.description }}</div>
             </div>
             <a-row type="flex" justify="end">
-              <a-col>
+              <a-col v-if="item.concerned">
+                <a-popconfirm placement="leftBottom" ok-text="Yes" cancel-text="No"
+                              @confirm="handCancel(item.subscriptionId)">
+                  <template #title>
+                    <p>确定要取消订阅该条信息吗？</p>
+                  </template>
+                  <a-tooltip placement="topLeft" title="取消订阅" @click.stop>
+                    <a-button class="heart w-20" type="link">
+                      <i class="fa fa-heart" aria-hidden="true"></i>
+                    </a-button>
+                  </a-tooltip>
+                </a-popconfirm>
+              </a-col>
+              <a-col v-else>
                 <a-tooltip placement="topLeft" title="订阅">
                   <a-button class="heart w-20" type="link" @click.stop="showSubscription(item)">
-                    <i class="fa fa-heart" aria-hidden="true"></i>
+                    <i class="fa fa-heart-o" aria-hidden="true"></i>
                   </a-button>
                 </a-tooltip>
               </a-col>
@@ -77,7 +90,7 @@
 
 import { reactive, toRefs } from 'vue'
 import { list } from '@/api/info'
-import { subscribe } from '@/api/subscription'
+import { subscribe, cancel } from '@/api/subscription'
 import { message } from 'ant-design-vue'
 
 export default {
@@ -96,31 +109,38 @@ export default {
         cron: ''
       },
       cronModel: 'day',
-      pushTime: ''
+      pushTime: '',
+      curr: {
+        page: 1,
+        size: 10
+      }
     })
-    const getInfoDefineList = (page, size, keyword) => {
+    const getInfoDefineList = () => {
       state.loading = true
       list({
-        page: page,
-        size: size,
-        keyword: keyword
+        page: state.curr.page,
+        size: state.curr.size,
+        keyword: state.keyword
       }).then(data => {
-        state.infoDefineList = data.records
+        state.infoDefineList = data.list
         state.total = data.total
       }).finally(() => {
         state.loading = false
       })
     }
-    getInfoDefineList(1, 10, state.keyword)
+    getInfoDefineList()
     const onChange = (page, pageSize) => {
-      getInfoDefineList(page, pageSize, state.keyword)
+      state.curr.page = page
+      state.curr.size = pageSize
+      getInfoDefineList()
     }
     const handSubscribe = () => {
       if (state.cronModel === 'day') {
-        state.subscribeForm.cron = '* ' + state.pushTime.format('m H') + ' * * ? *'
+        state.subscribeForm.cron = '0 ' + state.pushTime.format('m H') + ' * * ? *'
       }
       state.confirmSubscriptionLoading = true
       subscribe(state.subscribeForm).then(rep => {
+        getInfoDefineList()
         message.success(rep)
         state.subscriptionVisible = false
       }).finally(() => {
@@ -135,11 +155,18 @@ export default {
       state.subscribeForm.id = item.id
       state.subscriptionVisible = true
     }
+    const handCancel = id => {
+      cancel({ id: id }).then(rep => {
+        message.success(rep)
+        getInfoDefineList()
+      })
+    }
     return {
       showSubscription,
       handSubscribe,
       sayHello,
       onChange,
+      handCancel,
       ...toRefs(state)
     }
   }

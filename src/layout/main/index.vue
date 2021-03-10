@@ -13,7 +13,7 @@ export default {
 <style scoped>
 .content {
   margin: 5px;
-  padding: 24px;
+  padding: 5px 10px;
   background: #fff;
   height: 100%;
   overflow: auto;

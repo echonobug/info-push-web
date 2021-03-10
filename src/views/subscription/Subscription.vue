@@ -7,6 +7,7 @@
     :loading="loading"
     size="small"
     @change="handleTableChange"
+    bordered
   >
     <template #action="{ record }">
       <a-row :gutter="8">
@@ -129,7 +130,7 @@ export default {
     }
     const handOk = () => {
       if (state.cronModel === 'day') {
-        state.subscribeForm.cron = '* ' + state.pushTime.format('m H') + ' * * ? *'
+        state.subscribeForm.cron = '0 ' + state.pushTime.format('m H') + ' * * ? *'
       }
       state.confirmSubscriptionLoading = true
       update(state.subscribeForm).then(rep => {

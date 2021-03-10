@@ -5,7 +5,7 @@
   <div v-else class="full">
     <a-layout style="height:100%">
       <Sider/>
-      <a-layout style="height:100vh" :style="{ marginLeft: store.state.siderCollapsed?'80px':'200px',transition: 'margin-left 0.3s'}">
+      <a-layout style="height:100vh" :style="{ marginLeft: store.state.siderCollapsed?'80px':'200px',transition: 'margin-left 0.2s'}">
         <Header/>
         <Main/>
       </a-layout>
