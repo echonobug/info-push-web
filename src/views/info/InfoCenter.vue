@@ -29,11 +29,9 @@
                   <template #title>
                     <p>确定要取消订阅该条信息吗？</p>
                   </template>
-                  <a-tooltip placement="topLeft" title="取消订阅" @click.stop>
-                    <a-button class="heart w-20" type="link">
-                      <i class="fa fa-heart" aria-hidden="true"></i>
-                    </a-button>
-                  </a-tooltip>
+                  <a-button class="heart w-20" type="link" @click.stop>
+                    <i class="fa fa-heart" aria-hidden="true"></i>
+                  </a-button>
                 </a-popconfirm>
               </a-col>
               <a-col v-else>
@@ -89,9 +87,9 @@
 <script>
 
 import { reactive, toRefs } from 'vue'
-import { list } from '@/api/info'
 import { subscribe, cancel } from '@/api/subscription'
 import { message } from 'ant-design-vue'
+import { listWithSubInfo } from '@/api/info'
 
 export default {
   name: 'InfoCenter',
@@ -117,7 +115,7 @@ export default {
     })
     const getInfoDefineList = () => {
       state.loading = true
-      list({
+      listWithSubInfo({
         page: state.curr.page,
         size: state.curr.size,
         keyword: state.keyword

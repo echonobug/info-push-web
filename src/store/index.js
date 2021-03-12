@@ -2,6 +2,7 @@ import { createStore } from 'vuex'
 import { login, getInfo } from '@/api/user'
 import { ACCESS_TOKEN } from '@/util/constant'
 import { toLogin } from '@/util/router'
+import { nextTick } from '@vue/runtime-core'
 
 export default createStore({
   state: {
@@ -11,7 +12,8 @@ export default createStore({
       avatar: '',
       roles: [],
       info: {}
-    }
+    },
+    show_content: true
   },
   mutations: {
     COLLAPSED_SIDER (state) {
@@ -31,6 +33,11 @@ export default createStore({
     },
     SET_INFO: (state, info) => {
       state.user.info = info
+    },
+    RESET_CONTENT: (state) => {
+      state.show_content = false
+      nextTick(() => (state.show_content = true)).then(() => {
+      })
     }
   },
   actions: {
@@ -66,6 +73,9 @@ export default createStore({
       commit('SET_ROLES', [])
       localStorage.removeItem(ACCESS_TOKEN)
       toLogin()
+    },
+    RELOAD_CONTENT ({ commit }) {
+      commit('RESET_CONTENT')
     }
   },
   modules: {}

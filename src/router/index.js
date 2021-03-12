@@ -52,6 +52,10 @@ export const routes = [
     path: '/info',
     component: Layout,
     redirect: '/index',
+    meta: {
+      title: '信息管理',
+      icon: 'fa fa-cloud'
+    },
     children: [
       {
         path: '/info/index',
@@ -60,6 +64,15 @@ export const routes = [
         meta: {
           title: '信息中心',
           icon: 'fa fa-globe'
+        }
+      },
+      {
+        path: '/info/manage',
+        name: 'InfoManage',
+        component: () => import('@/views/info/InfoManage'),
+        meta: {
+          title: '信息管理',
+          icon: 'fa fa-cloud'
         }
       }
     ]

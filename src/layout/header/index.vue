@@ -1,9 +1,20 @@
 <template>
   <a-layout-header class="header">
     <div class="left-content">
-      <menu-unfold-outlined v-if="store.state.siderCollapsed" class="trigger"
-                            @click="() => store.dispatch('EXPANDED_SIDER')"/>
-      <menu-fold-outlined v-else class="trigger" @click="() => store.dispatch('COLLAPSED_SIDER')"/>
+      <a-row>
+        <a-col>
+          <menu-unfold-outlined v-if="store.state.siderCollapsed" class="trigger"
+                                @click="() => store.dispatch('EXPANDED_SIDER')"/>
+          <menu-fold-outlined v-else class="trigger" @click="() => store.dispatch('COLLAPSED_SIDER')"/>
+        </a-col>
+        <a-col>
+          <div>
+            <a-button type="link" size="large" style="color: black" @click="() => store.dispatch('RELOAD_CONTENT')">
+              <i class="fa fa-refresh" aria-hidden="true"></i>
+            </a-button>
+          </div>
+        </a-col>
+      </a-row>
     </div>
     <div class="right-content">
       <avatar-dropdown/>
@@ -42,13 +53,16 @@ export default {
   padding: 0;
   height: 50px;
   line-height: 50px;
-  .left-content{
+
+  .left-content {
     display: inline-block;
   }
-  .right-content{
+
+  .right-content {
     float: right;
     display: inline-block;
-    :hover{
+
+    :hover {
       background-color: #fafafa;
     }
   }
