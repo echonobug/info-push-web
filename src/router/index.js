@@ -74,6 +74,12 @@ export const routes = [
           title: '信息管理',
           icon: 'fa fa-cloud'
         }
+      },
+      {
+        path: '/info/new',
+        name: 'NewInfo',
+        component: () => import('@/views/info/NewInfo'),
+        hidden: true
       }
     ]
   },

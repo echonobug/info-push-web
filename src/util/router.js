@@ -28,3 +28,7 @@ export function show500 () {
 export function show403 () {
   go('/403')
 }
+
+export function toNewInfo () {
+  go('/info/new')
+}

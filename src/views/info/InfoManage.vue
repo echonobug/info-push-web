@@ -1,4 +1,7 @@
 <template>
+  <a-button @click="handleAdd" style="margin-bottom: 8px" size="small">
+    <i class="fa fa-plus mr-10" aria-hidden="true"></i>新建
+  </a-button>
   <a-table
     :columns="columns"
     :row-key="record => record.id"
@@ -38,13 +41,29 @@
     <template #filterIcon="filtered">
       <search-outlined :style="{ color: filtered ? '#108ee9' : undefined }"/>
     </template>
+    <template #action="{ record }">
+      <a-row :gutter="8">
+        <a-col>
+          <a-tooltip placement="top" title="查看信息定义json">
+            <a-button type="primary" size="small" @click="showContent(record)">
+              <i class="fa fa-info" aria-hidden="true"></i>
+            </a-button>
+          </a-tooltip>
+        </a-col>
+      </a-row>
+    </template>
   </a-table>
+  <a-modal v-model:visible="jsonVisible" :title="jsonTitle" :footer="null" width="800px" :bodyStyle={padding:0}
+           centered>
+    <json-viewer :value="jsonContent" copyable expand-depth="5"/>
+  </a-modal>
 </template>
 
 <script>
 import { reactive, toRefs } from 'vue'
 import { list } from '../../api/info'
 import { SearchOutlined } from '@ant-design/icons-vue'
+import { toNewInfo } from '../../util/router'
 
 const columns = [
   {
@@ -61,10 +80,6 @@ const columns = [
   },
   {
     title: '信息描述',
-    dataIndex: 'description'
-  },
-  {
-    title: '定义',
     dataIndex: 'description'
   },
   {
@@ -92,7 +107,10 @@ export default {
       },
       loading: false,
       searchText: '',
-      searchedColumn: ''
+      searchedColumn: '',
+      jsonContent: {},
+      jsonVisible: false,
+      jsonTitle: ''
     })
     const getList = () => {
       state.loading = true
@@ -127,13 +145,22 @@ export default {
       state.searchedColumn = ''
       getList()
     }
-
+    const showContent = record => {
+      state.jsonContent = JSON.parse(record.content)
+      state.jsonTitle = record.title + ' - 内容定义JSON'
+      state.jsonVisible = true
+    }
+    const handleAdd = () => {
+      toNewInfo()
+    }
     return {
       columns,
       handleTableChange,
       SearchOutlined,
       handleSearch,
       handleReset,
+      showContent,
+      handleAdd,
       ...toRefs(state)
     }
   }
@@ -141,5 +168,7 @@ export default {
 </script>
 
 <style scoped>
-
+.mr-10 {
+  margin-right: 10px;
+}
 </style>
