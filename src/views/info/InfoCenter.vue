@@ -14,6 +14,7 @@
           <a-card hoverable style="width: 200px" bodyStyle="padding: 10px 10px 5px" @click="sayHello">
             <template #cover>
               <img
+                class="cover"
                 alt="cover"
                 :src="item.image"
               />
@@ -191,5 +192,9 @@ export default {
 
 .detail {
   color: grey;
+}
+
+.cover {
+  height: 250px;
 }
 </style>

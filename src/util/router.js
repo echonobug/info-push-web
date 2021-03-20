@@ -1,7 +1,10 @@
 import router from '@/router'
 
-function go (url) {
-  router.push(url).then(() => {
+function go (url, params) {
+  router.push({
+    path: url,
+    query: { params: params }
+  }).then(() => {
   })
 }
 
@@ -31,4 +34,8 @@ export function show403 () {
 
 export function toNewInfo () {
   go('/info/new')
+}
+
+export function goEditInfo (record) {
+  go('/info/new', JSON.stringify(record))
 }

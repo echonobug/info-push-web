@@ -2,7 +2,9 @@ import request from '@/util/request'
 
 const infoApi = {
   ListWithSubInfo: '/infoDefine/listWithSubInfo',
-  List: '/infoDefine/list'
+  List: '/infoDefine/list',
+  Save: '/infoDefine/save',
+  Del: '/infoDefine/delete'
 }
 
 export function listWithSubInfo (parameter) {
@@ -19,5 +21,21 @@ export function list (parameter, data) {
     method: 'post',
     data: data,
     params: parameter
+  })
+}
+
+export function save (data) {
+  return request({
+    url: infoApi.Save,
+    method: 'post',
+    data: data
+  })
+}
+
+export function del (id) {
+  return request({
+    url: infoApi.Del,
+    method: 'post',
+    params: id
   })
 }

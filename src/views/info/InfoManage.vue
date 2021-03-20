@@ -50,20 +50,41 @@
             </a-button>
           </a-tooltip>
         </a-col>
+        <a-col>
+          <a-tooltip placement="top" title="编辑">
+            <a-button type="primary" size="small" @click="editInfo(record)">
+              <i class="fa fa-pencil" aria-hidden="true"></i>
+            </a-button>
+          </a-tooltip>
+        </a-col>
+        <a-col>
+          <a-popconfirm placement="leftBottom" ok-text="Yes" cancel-text="No"
+                        @confirm="delInfo(record.id)">
+            <template #title>
+              <p>确定要删除吗？</p>
+            </template>
+            <a-tooltip placement="top" title="删除">
+              <a-button type="danger" size="small">
+                <i class="fa fa-trash-o" aria-hidden="true"></i>
+              </a-button>
+            </a-tooltip>
+          </a-popconfirm>
+        </a-col>
       </a-row>
     </template>
   </a-table>
   <a-modal v-model:visible="jsonVisible" :title="jsonTitle" :footer="null" width="800px" :bodyStyle={padding:0}
            centered>
-    <json-viewer :value="jsonContent" copyable expand-depth="5"/>
+    <json-viewer :value="jsonContent" copyable :expand-depth="5"/>
   </a-modal>
 </template>
 
 <script>
 import { reactive, toRefs } from 'vue'
-import { list } from '../../api/info'
+import { del, list } from '../../api/info'
 import { SearchOutlined } from '@ant-design/icons-vue'
-import { toNewInfo } from '../../util/router'
+import { goEditInfo, toNewInfo } from '../../util/router'
+import { message } from 'ant-design-vue'
 
 const columns = [
   {
@@ -153,6 +174,15 @@ export default {
     const handleAdd = () => {
       toNewInfo()
     }
+    const delInfo = id => {
+      del({ id: id }).then(msg => {
+        message.success(msg)
+        getList()
+      })
+    }
+    const editInfo = item => {
+      goEditInfo(item)
+    }
     return {
       columns,
       handleTableChange,
@@ -161,6 +191,8 @@ export default {
       handleReset,
       showContent,
       handleAdd,
+      delInfo,
+      editInfo,
       ...toRefs(state)
     }
   }
